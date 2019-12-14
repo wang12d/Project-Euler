@@ -66,13 +66,13 @@ Toolbox::findPrimes(const int& n)
                   // all the number that contain i as factor has
                   // been marked, thus the smallest number is i*i
                   // j > 0 in case the overflow
-                  for (j = i*i; j * j <= n; j += i) {
+                  for (j = i*i; j <= n; j += i) {
                         is_prime[j] = false;    // j contain prime i as a factor thus not a prime
                   }
             }
       }
       for (i = 2; i <= n; ++i) {
-            primes.push_back(i);
+            if (is_prime[i]) primes.push_back(i);
       }
       return primes;
 }
