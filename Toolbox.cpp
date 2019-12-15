@@ -97,33 +97,33 @@ Toolbox::findTotients(const int& n)
 std::vector<std::vector<int>>
 Toolbox::findPrimeFactors(const int& n)
 {
-      long long i, j, tmp;
-      std::vector<std::vector<int>> prime_factors(n+1, std::vector<int>{});
-      std::vector<bool> is_prime(n+1, true);
-      std::vector<int> numbers(n+1);
-      for (i = 0; i <= n; ++i) {
-            numbers[i] = i;
-      }
-      is_prime[0] = is_prime[1] = false;
-      for (i = 2; i*i <= n; ++i) {
-            if (is_prime[i]) {
-                  for (j = 2*i; j <= n; j += i) {
-                        tmp = i;
-                        do {
-                              numbers[j] /= i;
-                              tmp *= i;
-                        } while (j % tmp == 0);
-                        prime_factors[j].push_back(tmp / i);
-                        is_prime[j] = false;
-                  }
+    long long i, j, tmp;
+    std::vector<std::vector<int>> prime_factors(n+1, std::vector<int>{});
+    std::vector<bool> is_prime(n+1, true);
+    std::vector<int> numbers(n+1);
+    for (i = 0; i <= n; ++i) {
+        numbers[i] = i;
+    }
+    is_prime[0] = is_prime[1] = false;
+    for (i = 2; i*i <= n; ++i) {
+        if (is_prime[i]) {
+            for (j = 2*i; j <= n; j += i) {
+                tmp = i;
+                do {
+                    numbers[j] /= i;
+                    tmp *= i;
+                } while (j % tmp == 0);
+                prime_factors[j].push_back(tmp / i);
+                is_prime[j] = false;
             }
-      }
-      for (i = 2; i <= n; ++i) {
-            if (numbers[i] != 1 && !is_prime[i]) {
-                  prime_factors[i].push_back(numbers[i]);
-            }
-      }
-      return prime_factors;
+        }
+    }
+    for (i = 2; i <= n; ++i) {
+        if (numbers[i] != 1 && !is_prime[i]) {
+            prime_factors[i].push_back(numbers[i]);
+        }
+    }
+    return prime_factors;
 }
 
 std::vector<std::vector<int>>
