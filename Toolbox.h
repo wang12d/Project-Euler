@@ -5,25 +5,27 @@
 #include <vector>
 #include <sys/time.h>
 
+template <typename T>
 class Toolbox
 {
 public:
     // find all the prime numbers between 1~n
-    static std::vector<int> findPrimes(const int&);
+    static std::vector<T> findPrimes(const T&);
     // find all the totient value between 1~n
-    static std::vector<int> findTotients(const int&);
-    // find all the sole prime factors betwen 1~n
-    static std::vector<std::vector<int>> findPrimeFactors(const int&);
+    static std::vector<T> findTotients(const T&);
+    // find all the sole prime factors betwen 2~n
+    static std::vector<std::vector<T>> findPrimeFactors(const T&);
     // find all the subset of size n
-    static std::vector<std::vector<int>> findSubset(const int&);
-    static int CRT(const std::vector<int>&, const std::vector<int>&);
-    static long long extendGCD(long long, long long, long long*, long long*);
-    static int GCD(int, int);
-    static long long power(long long, long long, long long init=1);
-    static long long powerWithMOD(long long, long long, const long long&, long long init=1);
+    static std::vector<std::vector<T>> findSubset(const T&);
+    static T CRT(const std::vector<T>&, const std::vector<T>&);
+    static T extendGCD(T, T, T*, T*);
+    static T GCD(T, T);
+    static T power(T, T, T init=1);
+    static T powerWithMOD(T, T, const T&, T init=1);
     static void timer();
     static void timeCost();
-    static bool isPrime(const unsigned long long&);
+    static bool isPrime(const T&);
 private:
     static struct timeval begin;
 };
+

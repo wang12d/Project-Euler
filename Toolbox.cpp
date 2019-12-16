@@ -3,10 +3,12 @@
 using std::cout;
 using std::endl;
 
-struct timeval Toolbox::begin;
+template<typename T>
+struct timeval Toolbox<T>::begin;
 
+template<typename T>
 bool
-isPrime(const unsigned long long& n)
+Toolbox<T>::isPrime(const T& n)
 {
     if (n == 1)     return false;
     if (n % 2 == 0) return false;
@@ -17,28 +19,33 @@ isPrime(const unsigned long long& n)
     return true;
 }
 
+
+template<typename T>
 void
-Toolbox::timer()
+Toolbox<T>::timer()
 {
     gettimeofday(&Toolbox::begin, nullptr);
 }
 
+template<typename T>
 void
-Toolbox::timeCost()
+Toolbox<T>::timeCost()
 {
     struct timeval end; gettimeofday(&end, nullptr);
     cout << "Time cost: " << (double) ((end.tv_sec - Toolbox::begin.tv_sec) * 1000000 + end.tv_usec - Toolbox::begin.tv_usec) / 1000000 << "s" << endl;
 }
 
-int
-Toolbox::GCD(int a, int b)
+template<typename T>
+T
+Toolbox<T>::GCD(T a, T b)
 {
     if (a == 0) return b;
     return GCD(b%a, a);
 }
 
-long long
-Toolbox::extendGCD(long long a, long long b, long long *x, long long *y)
+template<typename T>
+T
+Toolbox<T>::extendGCD(T a, T b, T *x, T *y)
 {
     if (b == 0) {
         *x = 1;
@@ -46,20 +53,21 @@ Toolbox::extendGCD(long long a, long long b, long long *x, long long *y)
         return a;
     }
 
-    long long x1, y1;
-    long long d = extendGCD(b, a % b, &x1, &y1);
+    T x1, y1;
+    T d = extendGCD(b, a % b, &x1, &y1);
     *x = y1;
     *y = x1 - (a / b) * y1;
 
     return d;
 }
 
-std::vector<int>
-Toolbox::findPrimes(const int& n)
+template <typename T>
+std::vector<T>
+Toolbox<T>::findPrimes(const T& n)
 {
-      long long i, j;  // use long in case overflow
+      T i, j;  // use long in case overflow
       std::vector<bool> is_prime(n+1, true);
-      std::vector<int> primes;
+      std::vector<T> primes;
       is_prime[0] = is_prime[1] = false;
       for (i = 2; i*i <= n; ++i) {
             if (is_prime[i]) {
@@ -77,11 +85,12 @@ Toolbox::findPrimes(const int& n)
       return primes;
 }
 
-std::vector<int>
-Toolbox::findTotients(const int& n)
+template<typename T>
+std::vector<T>
+Toolbox<T>::findTotients(const T& n)
 {
-      long long i, j;  // use long long in case overflow
-      std::vector<int> totients(n+1, 0);
+      T i, j;  // use long long in case overflow
+      std::vector<T> totients(n+1, 0);
       for (i = 2; i <= n; ++i) {
             if (!totients[i]) {
                   totients[i] = i - 1;
@@ -94,13 +103,14 @@ Toolbox::findTotients(const int& n)
       return totients;
 }
 
-std::vector<std::vector<int>>
-Toolbox::findPrimeFactors(const int& n)
+template<typename T>
+std::vector<std::vector<T>>
+Toolbox<T>::findPrimeFactors(const T& n)
 {
     long long i, j, tmp;
-    std::vector<std::vector<int>> prime_factors(n+1, std::vector<int>{});
+    std::vector<std::vector<T>> prime_factors(n+1, std::vector<T>{});
     std::vector<bool> is_prime(n+1, true);
-    std::vector<int> numbers(n+1);
+    std::vector<T > numbers(n+1);
     for (i = 0; i <= n; ++i) {
         numbers[i] = i;
     }
@@ -126,14 +136,15 @@ Toolbox::findPrimeFactors(const int& n)
     return prime_factors;
 }
 
-std::vector<std::vector<int>>
-Toolbox::findSubset(const int& n)
+template<typename T>
+std::vector<std::vector<T>>
+Toolbox<T>::findSubset(const T& n)
 {
-      int bound = 1 << n;
-      std::vector<std::vector<int>> subsets(bound, std::vector<int>{});
-      for (int i = 0; i < bound; ++i) {
-            int p  = i;
-            for (int j = 0; j < n; ++j) {
+      T bound = 1 << n;
+      std::vector<std::vector<T>> subsets(bound, std::vector<T>{});
+      for (T i = 0; i < bound; ++i) {
+            T p  = i;
+            for (T j = 0; j < n; ++j) {
                   subsets[i].push_back(p & 1);
                   p >>= 1;
             }
@@ -142,18 +153,19 @@ Toolbox::findSubset(const int& n)
 }
 
 // sovle x=moduli(mod coprimes)
-int
-Toolbox::CRT(const std::vector<int>& coprimes, const std::vector<int>& moduli)
+template<typename T>
+T
+Toolbox<T>::CRT(const std::vector<T>& coprimes, const std::vector<T>& moduli)
 {
-      long long prod(1LL);
+      T prod(1LL);
       for (auto i: coprimes) {
             prod *= i;
       }
-      long long res(0LL);
-      long long inv, tmp;
-      int sz = coprimes.size();
-      long long d = 0;
-      long long p = 0;
+      T res(0LL);
+      T inv, tmp;
+      T sz = coprimes.size();
+      T d = 0;
+      T p = 0;
       for (auto i = 0; i < sz; ++i) {
             p = prod / coprimes[i];
             d = extendGCD(p, coprimes[i], &inv, &tmp);
@@ -162,8 +174,9 @@ Toolbox::CRT(const std::vector<int>& coprimes, const std::vector<int>& moduli)
       return (res + prod) % prod;
 }
 
-long long
-Toolbox::power(long long base, long long expt, long long init)
+template<typename T>
+T
+Toolbox<T>::power(T base, T expt, T init)
 {
     long long res = init;
     while (base) {
@@ -176,8 +189,9 @@ Toolbox::power(long long base, long long expt, long long init)
     return res;
 }
 
-long long
-Toolbox::powerWithMOD(long long base, long long expt, const long long& m, long long init)
+template<typename T>
+T
+Toolbox<T>::powerWithMOD(T base, T expt, const T& m, T init)
 {
     long long res = init;
     while (expt) {
@@ -189,3 +203,10 @@ Toolbox::powerWithMOD(long long base, long long expt, const long long& m, long l
     }
     return res;
 }
+
+template class Toolbox<int>;
+template class Toolbox<unsigned int>;
+template class Toolbox<unsigned long>;
+template class Toolbox<unsigned long long>;
+template class Toolbox<long>;
+template class Toolbox<long long>;
